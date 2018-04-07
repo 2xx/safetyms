@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/reg',  'RegController@create'); // 外委企业注册
+Route::post('/reg', 'RegController@store'); // 外委企业注册
+
+
 Route::get('/', function () {
     return view('welcome');
 });

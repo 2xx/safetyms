@@ -4,10 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class ProInfo extends Model
 {
-    
-
-
-
+    //
 }

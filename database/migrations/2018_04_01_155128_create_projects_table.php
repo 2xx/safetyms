@@ -15,12 +15,26 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('project_num')->comment('项目规范编号')->default('');
             $table->string('pname')->comment('项目名称');
-            $table->integer('publish_time')->comment('发布时间');
-            $table->integer('start_time')->comment('开始时间');
-            $table->integer('end_time')->comment('结束时间');
-            $table->integer('state')->comment('1未发布 2已发布 3结束');
-            $table->string('content_id')->comment('需要提交资料的ID,用逗号隔开');
+            $table->integer('department')->comment('发包部门')->unsigned();
+            $table->integer('publisher')->comment('项目发布人')->unsigned();
+            $table->string('project_leader')->comment('项目负责人')->default('');
+            $table->string('project_leader_tel')->comment('项目负责人电话')->default('');
+            $table->string('job_location')->comment('项目作业区域单位')->default('');
+            $table->string('job_location_leader')->comment('作业区域单位负责人')->default('');
+            $table->string('location_leader_tel')->comment('区域负责人电话')->default('');
+            $table->string('field_leader')->comment('现场负责人')->default('');
+            $table->string('field_leader_tel')->comment('现场负责人电话')->default('');
+            $table->string('introduction')->comment('项目简介')->default('');
+            $table->integer('verifier')->comment('审核人')->default(0);
+            $table->string('verifier_opinion')->comment('审核人意见')->default('');
+            $table->integer('verifier_leader')->comment('审核部分领导')->default(0);
+            $table->string('leader_opinion')->comment('审核部分领导意见')->default('');
+            $table->datetime('publish_time')->comment('发布时间');
+            $table->datetime('stop_time')->comment('截止时间');
+            $table->integer('tender_id')->comment('中标ID')->default(0);
+            $table->integer('status')->comment('1未发布 2已发布 3结束')->default(1);
             $table->timestamps();
         });
     }
