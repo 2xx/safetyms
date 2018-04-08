@@ -19,6 +19,8 @@ Route::group([
     $router->get('tender/maketender/{projectid}', 'TenderController@makeTender');  // 创建 申请记录  申请_文件记录
     $router->get('tender/upload/{projectid}', 'TenderFileController@uploads');  // 上传 项目申请  相关档案资料
 
-    $router->get('project/{id}/checktable', 'ProjectController@checkTable');
+    $router->get('project/{id}/checktable', 'ProjectController@checkTable');  // 外来单位安全管理情况审核表
+    $router->get('project/{id}/safetycard', 'ProjectController@safetycard');  // 安全传递卡
+    $router->get('project/{id}/disclosure', 'ProjectController@disclosure');  // 安全交底记录表
 
 });

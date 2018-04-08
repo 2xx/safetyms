@@ -29,6 +29,20 @@ class TenderController extends Controller
         $tender      = Tender::create(['project_id'=>(int)$projectid, 'user_id'=>Admin::user()->id]);
         $tender_file = TenderFile::create(['tender_id'=>$tender->id]);
 
+        $dirname = public_path('Projects').'/'.'P'.date('Ymd').str_pad($projectid, 10, '0', STR_PAD_LEFT);
+
+        // 如果项目目录不存在就创建
+        if (!file_exists($dirname)) {
+            mkdir($dirname);
+        }
+
+        $dirname .= '/Tender'.date('Ymd').str_pad($tender->id, 10, '0', STR_PAD_LEFT);
+        // 如果申请目录不存在就创建
+        if (!file_exists($dirname)){
+            mkdir($dirname);
+        }
+        
+
         return redirect('/admin/tender/'.$tender->id.'/edit');
     }
     
