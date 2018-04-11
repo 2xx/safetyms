@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TenderFile extends Model
 {
-    protected $fillable = ['tender_id'];
+    protected $fillable = ['tender_id','save_dir'];
 }

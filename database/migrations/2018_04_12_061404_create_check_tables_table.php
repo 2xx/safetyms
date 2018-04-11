@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTendersTable extends Migration
+class CreateCheckTablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateTendersTable extends Migration
      */
     public function up()
     {
-        Schema::create('tenders', function (Blueprint $table) {
+        Schema::create('check_tables', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->comment('项目ID');
-            $table->integer('user_id')->comment('申请人ID');
             $table->string('company_name')->comment('企业名称');
             $table->string('company_type')->comment('企业性质');
             $table->string('company_addr')->comment('企业地址');
@@ -34,12 +33,24 @@ class CreateTendersTable extends Migration
             $table->string('safe_worker')->comment('专职安全员');
             $table->integer('special_workers')->comment('特种作业人数');
 
-            $table->string('save_dir')->comment('资料保存目录');
 
-            $table->integer('status')->comment('申请状态');
+            $table->integer('department')->comment('发包部门')->unsigned();
+            $table->integer('publisher')->comment('项目发布人')->unsigned();
+            $table->string('project_leader')->comment('项目负责人')->default('');
+            $table->string('project_leader_tel')->comment('项目负责人电话')->default('');
+            $table->string('job_location')->comment('项目作业区域单位')->default('');
+            $table->string('job_location_leader')->comment('作业区域单位负责人')->default('');
+            $table->string('location_leader_tel')->comment('区域负责人电话')->default('');
+            $table->string('field_leader')->comment('现场负责人')->default('');
+            $table->string('field_leader_tel')->comment('现场负责人电话')->default('');
+            $table->string('introduction')->comment('项目简介')->default('');
+            $table->integer('verifier')->comment('审核人')->default(0);
+            $table->string('verifier_opinion')->comment('审核人意见')->default('');
+            $table->integer('verifier_leader')->comment('审核部分领导')->default(0);
+            $table->string('leader_opinion')->comment('审核部分领导意见')->default('');
 
-            $table->timestamps(); // 申请时间  修改时间
-            
+
+            $table->timestamps();
         });
     }
 
@@ -50,6 +61,6 @@ class CreateTendersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tenders');
+        Schema::dropIfExists('check_tables');
     }
 }

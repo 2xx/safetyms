@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use App\Project;
 use Carbon\Carbon;
+use App\Tender;
+use App\TenderFile;
 use Encore\Admin\Widgets\Table;
 
 class ProjectController extends Controller
@@ -80,7 +82,7 @@ class ProjectController extends Controller
 
             
             $grid->column('申请情况')->display(function(){
-            	return '<a href="">查看列表</a>';
+            	return '<a href="/admin/tenderlist/'.$this->getKey().'">查看列表</a>';
             });
             $grid->column('status','状态')->display(function($value){
             	if($value==1){
@@ -434,4 +436,117 @@ XXOO;
             $content->body($form);
         });
     }
+
+
+    // 查看某个项目的申请列表
+    public function tenders($id)
+    {
+        return Admin::content(function (Content $content) use($id){
+
+            $content->header('项目-申请列表');
+            $content->description('Tender List');
+
+            $content->body($this->tendergrid($id));
+        });
+    }
+
+    public function tendergrid($id)
+    {
+        return Admin::grid(Tender::class, function(Grid $grid)use($id){
+            $grid->model()->where('project_id','=',$id);
+            $grid->column('xxoo','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+            $grid->column('company_name','外委单位名称');
+            $grid->column('created_at','申请日期')->display(function($value){
+                return Carbon::parse($value)->toDateString();
+            });
+
+            $grid->column('','设置')->display(function(){
+                return '<a href="">选为中标</a>';
+            })->style('width:170px');
+
+
+            $grid->disableRowSelector();   // 禁止选择
+
+            // $grid->disableActions();    // 禁止操作列
+
+            $grid->actions(function($action){
+                $action->disableDelete();  // 禁止删除
+                $action->disableEdit();    // 禁止编辑
+                
+                // 申请ID
+                $tender_id = $this->getKey();
+                // 资料ID
+                $tenderfile_id = TenderFile::where('tender_id','=',$tender_id)->first()->id;
+              
+                $action->append("<a href='/admin/tenderfile/".$tenderfile_id."/list'>查看上传档案资料</a>&nbsp;&nbsp;&nbsp;&nbsp;");
+
+            });
+
+        });
+    }
+
+    //  查看指定申请的所有上传资料
+    public function showfiles($id)
+    {
+        return Admin::content(function (Content $content)use($id){
+            $content->header('查看上传资料');
+            $content->header('Show Uploaded Files');
+            $content->body($this->showfilesForm()->edit($id));
+        });
+    }
+
+
+    public function showfilesForm()
+    {
+        return Admin::form(TenderFile::class, function(Form $form){
+
+                $form->tab('需上传资料1', function ($form){
+         
+                   $form->display('license','营业执照')->with(function($value){
+                        return "<img src='/Projects/$value' />";
+                   });
+                   $form->image('certificate','施工等级资质证书');
+                   $form->image('authorization','授权书');
+                   $form->image('legal_cert','法人代表资质证书');
+                   $form->image('special_cert','特种作业操作证');
+                   $form->image('device_report','特种设备检验报告');
+                   $form->textarea('job_resume','施工简历和近3年安全施工记录');
+
+                });
+
+                $form->tab('需上传资料2', function ($form){
+
+                   $form->file('safety_protocol','安全管理协议');
+                   $form->file('safety_cart','安全传递卡');
+                   $form->file('safety_record','安全交底记录');
+
+                   $form->file('safety_responsibility','安全生产责任制');
+                   $form->file('safety_regulations','安全管理规章制度');
+                   $form->file('safety_sop','安全操作规程');
+                   $form->file('emergency_rescue_plan','应急救援预案');
+
+                   $form->image('safety_net_diagram','安全组织机构及管理网络图');
+                   $form->image('safety_worker_cert','安全管理人员资质证书');
+
+                });
+
+                $form->tab('需上传资料3', function ($form){
+
+                   $form->image('worker_medical','从业人员年龄工种职业健康体检表');
+                   $form->image('labor_contract','员工的劳动合同及工伤保险签订和缴纳证明');
+                   $form->image('safety_training','相关人员安全教育培训记录');
+                   $form->image('electric_ticket','临时用电审批证明');
+                   $form->file('construction_scheme','施工方案和安全技术措施');
+                   $form->textarea('safety_inspection','施工现场安全检查记录');
+                   $form->file('inspection_record','验收记录');
+                   $form->file('other_files','其他存档资料');
+
+                });
+                $form->disableSubmit(); // 去除提交按钮
+                $form->disableReset();  // 去除重置按钮
+        });
+    }
+
+
+
 }

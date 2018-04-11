@@ -27,19 +27,34 @@ class TenderController extends Controller
     public function makeTender($projectid)
     {
         $tender      = Tender::create(['project_id'=>(int)$projectid, 'user_id'=>Admin::user()->id]);
-        $tender_file = TenderFile::create(['tender_id'=>$tender->id]);
+        
 
-        $dirname = public_path('Projects').'/'.'P'.date('Ymd').str_pad($projectid, 10, '0', STR_PAD_LEFT);
+        // 生成的项目目录
+        $dir_project = '/'.'P'.date('Ymd').str_pad($projectid, 10, '0', STR_PAD_LEFT);
+        // 生成的申请目录
+        $dir_tender = $dir_project.'/Tender'.date('Ymd').str_pad($tender->id, 10, '0', STR_PAD_LEFT);
+
+        // 记录申请的资料保存目录(保存在tender表中)
+        $tender->save_dir = ltrim($dir_tender,'/');
+        $tender->save();
+
+        // 记录申请的资料保存目录(保存在tender_files表中)
+        $tender_file = TenderFile::create(['tender_id'=>$tender->id,'save_dir'=>$tender->save_dir]);
+
+
+        // 项目的绝对路径
+        $dir_project = public_path('Projects').$dir_project;
+        // 申请的绝对路径
+        $dir_tender  = public_path('Projects').$dir_tender;
 
         // 如果项目目录不存在就创建
-        if (!file_exists($dirname)) {
-            mkdir($dirname);
+        if (!file_exists($dir_project)) {
+            mkdir($dir_project);
         }
 
-        $dirname .= '/Tender'.date('Ymd').str_pad($tender->id, 10, '0', STR_PAD_LEFT);
         // 如果申请目录不存在就创建
-        if (!file_exists($dirname)){
-            mkdir($dirname);
+        if (!file_exists($dir_tender)){
+            mkdir($dir_tender);
         }
         
 
@@ -87,9 +102,13 @@ class TenderController extends Controller
               $actions->disableDelete();  // 禁用 删除
               $actions->disableEdit();    // 禁用 修改
 
+              // 申请ID
+              $tender_id = $this->getKey();
+              // 资料ID
+              $tenderfile_id = TenderFile::where('tender_id','=',$tender_id)->first()->id;
+
               
-              
-              $actions->append("<a href='/admin/tender/upload/".$this->getKey()."'>上传档案资料</a>&nbsp;&nbsp;&nbsp;&nbsp;");
+              $actions->append("<a href='/admin/tenderfile/".$tenderfile_id."/edit'>上传档案资料</a>&nbsp;&nbsp;&nbsp;&nbsp;");
               $actions->append("<a href='/admin/tender/".$this->getKey()."/edit'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;");
               $actions->append("<a href='/admin/tender/commit/".$this->getKey()."'>提交</a>");
 

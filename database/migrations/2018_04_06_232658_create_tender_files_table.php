@@ -17,6 +17,7 @@ class CreateTenderFilesTable extends Migration
 
             $table->increments('id');
             $table->integer('tender_id')->comment('申请编号')->nullable();
+            $table->string('save_dir',255)->comment('保存资料的目录')->nullable();
 
             $table->string('license',255)->comment('营业执照')->nullable();
             $table->string('certificate',255)->comment('等级证书')->nullable();
