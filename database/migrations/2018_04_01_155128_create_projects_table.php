@@ -35,6 +35,20 @@ class CreateProjectsTable extends Migration
             $table->datetime('stop_time')->comment('截止时间');
             $table->integer('tender_id')->comment('中标ID')->default(0);
             $table->integer('status')->comment('1未发布 2已发布 3结束')->default(1);
+
+ 
+
+            $table->integer('manager_name_card')->comment('主管领导')->default(0);
+            $table->integer('workshop_leader_card')->comment('车间主任')->default(0);
+            $table->integer('safety_section_card')->comment('安全科')->default(0);
+            $table->integer('safety_department_card')->comment('安全部')->default(0);
+
+
+            $table->integer('manager_name_disclosure')->comment('主管领导')->default(0);
+            $table->integer('workshop_leader_disclosure')->comment('车间主任')->default(0);
+            $table->integer('device_leader_disclosure')->comment('设备科长')->default(0);
+
+
             $table->timestamps();
         });
     }

@@ -325,4 +325,23 @@ class TenderController extends Controller
       			});
         });
     }
+
+
+    // 设置指定申请为中标状态
+    public function setAccepted($tender_id)
+    {
+        // 把申请的状态改为中标
+        $tender = Tender::find($tender_id);
+        $tender->status = 4;
+        $tender->save();
+
+        // 把申请ID,写入对应的项目记录中
+        $project = Project::where('id','=',$tender->project_id)->first();
+        $project->tender_id = $tender_id;
+        $project->status = 3;
+        $project->save();
+
+        return redirect('/admin/tenderlist/'.$project->id);
+    }
+
 }
