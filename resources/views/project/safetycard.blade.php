@@ -35,13 +35,53 @@
                         <td>区域<br>单位</td>
                         <td><input type="text" name="field_name" value="{{$safetyCard->field_name}}"></td>
                         <td>主管领导<br>签字</td>
-                        <td><input type="text" name="manager_name" value="{{$safetyCard->manager_name}}"></td>
+                        <td style="position:relative;">
+                            @if($safetyCard->manager_sign==0)
+                                @if($safetyCard->manager_name==Admin::user()->id)
+                                 <a href="/admin/safetycard/{{$safetyCard->id}}/manager_name/sign" style="position: absolute;left:7%;top:30%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:7%;top:17%;">待<strong style="color:blue;font-weight: normal;">{{$safetyCard->manager_name_str}}</strong>审核</span>
+                                @endif
+                            @elseif($safetyCard->manager_sign==1)
+                               <span style="position: absolute;left:7%;top:5%;">已由{{$safetyCard->manager_name_str}}审核</span>
+                            @endif
+                        </td>
                         <td>车间主任<br>签字</td>
-                        <td><input type="text" name="workshop_leader" value="{{$safetyCard->workshop_leader}}"></td>
+                        <td style="position:relative;">
+                            @if($safetyCard->workshop_sign==0)
+                                @if($safetyCard->workshop_leader==Admin::user()->id)
+                                 <a href="/admin/safetycard/{{$safetyCard->id}}/workshop_leader/sign" style="position: absolute;left:7%;top:30%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:7%;top:30%;">待<strong style="color:blue;font-weight: normal;">{{$safetyCard->workshop_leader_name}}</strong>审核</span>
+                                @endif
+                            @elseif($safetyCard->workshop_sign==1)
+                               <span style="position: absolute;left:7%;top:5%;">已由{{$safetyCard->workshop_leader_name}}审核</span>
+                            @endif
+                        </td>
                         <td>安全科<br>签字</td>
-                        <td><input type="text" name="safety_section" value="{{$safetyCard->safety_section}}"></td>
+                        <td style="position:relative;">
+                            @if($safetyCard->section_sign==0)
+                                @if($safetyCard->safety_section==Admin::user()->id)
+                                 <a href="/admin/safetycard/{{$safetyCard->id}}/safety_section/sign" style="position: absolute;left:15%;top:30%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:15%;top:30%;">待<strong style="color:blue;font-weight: normal;">{{$safetyCard->safety_section_name}}</strong>审核</span>
+                                @endif
+                            @elseif($safetyCard->section_sign==1)
+                               <span style="position: absolute;left:1%;top:12%;">已由{{$safetyCard->safety_section_name}}审核</span>
+                            @endif
+                        </td>
                         <td>安全部<br>签字</td>
-                        <td><input type="text" name="safety_department" value="{{$safetyCard->safety_department}}"></td>
+                        <td style="position:relative;">
+                            @if($safetyCard->department_sign==0)
+                                @if($safetyCard->safety_department==Admin::user()->id)
+                                 <a href="/admin/safetycard/{{$safetyCard->id}}/safety_department/sign" style="position: absolute;left:15%;top:30%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:15%;top:30%;">待<strong style="color:blue;font-weight: normal;">{{$safetyCard->safety_department_name}}</strong>审核</span>
+                                @endif
+                            @elseif($safetyCard->department_sign==1)
+                               <span style="position: absolute;left:1%;top:12%;">已由{{$safetyCard->safety_department_name}}审核</span>
+                            @endif
+                        </td>
                     </tr>
                    
                 </table>

@@ -33,4 +33,16 @@ Route::group([
     $router->get('tenderlist/{id}', 'ProjectController@tenders');     // 查看指定项目的申请列表
     $router->get('tenderfile/{id}/list', 'ProjectController@showfiles');  // 查看指定申请的所有上传资料
 
+    $router->get('checktable/{id}/verifier/sign',        'CheckTableController@verifierSign');      // 审核表 审核人签字
+    $router->get('checktable/{id}/verifier_leader/sign', 'CheckTableController@verifierLeadrSign'); // 审核表 领导签字
+
+    $router->get('safetycard/{id}/manager_name/sign',      'SafetyCardController@mangerNameSign');       // 传递卡 主管领导签字
+    $router->get('safetycard/{id}/workshop_leader/sign',   'SafetyCardController@workshopLeaderSign');   // 传递卡 车间主作签字
+    $router->get('safetycard/{id}/safety_section/sign',    'SafetyCardController@safetySectionSign');    // 传递卡 安全科签字
+    $router->get('safetycard/{id}/safety_department/sign', 'SafetyCardController@safetyDepartmentSign'); // 传递卡 安全部签字
+
+    $router->get('disclosure/{id}/manager_name/sign',    'DisclosureController@managerNameSign');      // 交底记录 主管领导签字
+    $router->get('disclosure/{id}/workshop_leader/sign', 'DisclosureController@workershopLeaderSign'); // 交底记录 车间主任签字
+    $router->get('disclosure/{id}/device_leader/sign',   'DisclosureController@deviceLeaderSign');         // 交底记录 设备科长签字
+
 });

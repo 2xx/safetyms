@@ -14,7 +14,7 @@
                        <td colspan="2"><input type="text" name="department_leader" value="{{$disclosure->department_leader}}"></td>
                        <td>负责人</td>
                        <td style="width:100px;"><input type="text" name="charge" value="{{$disclosure->charge}}"></td>
-                       <td>工程项目</td>
+                       <td style="width:170px;">工程项目</td>
                        <td colspan="2"><input type="text" name="project_name" value="{{$disclosure->project_name}}"></td>
                     </tr>
                     <tr>
@@ -49,11 +49,41 @@
                         <td>区域<br>单位</td>
                         <td colspan="2"><input type="text" name="field_name" value="{{$disclosure->field_name}}"></td>
                         <td>主管<br>领导</td>
-                        <td colspan="2"><input type="text" name="manager_name" value="{{$disclosure->manager_name}}"></td>
+                        <td colspan="2" style="position: relative;">
+                            @if($disclosure->manager_sign==0)
+                                @if($disclosure->manager_name==Admin::user()->id)
+                                 <a href="/admin/disclosure/{{$disclosure->id}}/manager_name/sign" style="position: absolute;left:18%;top:30%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:18%;top:30%;">等待{{$disclosure->manager_name_str}}审核</span>
+                                @endif
+                            @elseif($disclosure->manager_sign==1)
+                               <span style="position: absolute;left:1%;top:30%;">已由{{$disclosure->manager_name_str}}审核</span>
+                            @endif
+                        </td>
                         <td>车间<br>主任</td>
-                        <td><input type="text" name="workshop_leader" value="{{$disclosure->workshop_leader}}"></td>
+                        <td style="position: relative;">
+                            @if($disclosure->workshop_sign==0)
+                                @if($disclosure->workshop_leader==Admin::user()->id)
+                                 <a href="/admin/disclosure/{{$disclosure->id}}/workshop_leader/sign" style="position: absolute;left:18%;top:30%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:0%;top:9%;">等待{{$disclosure->workshop_leader_str}}审核</span>
+                                @endif
+                            @elseif($disclosure->workshop_sign==1)
+                               <span style="position: absolute;left:0%;top:9%;">已由{{$disclosure->workshop_leader_str}}审核</span>
+                            @endif
+                        </td>
                         <td>设备科长</td>
-                        <td><input type="text" name="device_leader" value="{{$disclosure->device_leader}}"></td>
+                        <td style="position: relative;">
+                            @if($disclosure->device_sign==0)
+                                @if($disclosure->device_leader==Admin::user()->id)
+                                 <a href="/admin/disclosure/{{$disclosure->id}}/device_leader/sign" style="position: absolute;left:8%;top:30%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:2%;top:8%;">等待{{$disclosure->device_leader_str}}审核</span>
+                                @endif
+                            @elseif($disclosure->device_sign==1)
+                               <span style="position: absolute;left:2%;top:8%;">已由{{$disclosure->device_leader_str}}审核</span>
+                            @endif
+                        </td>
                    </tr>
                 </table>
                 {{ csrf_field() }}

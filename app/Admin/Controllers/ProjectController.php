@@ -380,16 +380,16 @@ class ProjectController extends Controller
                 $arr_checktable['verifier'] = $form->model()->verifier;
                 $arr_checktable['verifier_leader'] = $form->model()->verifier_leader;
 
-                $arr_safetycard['manager_name_card']    = $form->model()->manager_name_card;
-                $arr_safetycard['workshop_leader_card'] = $form->model()->workshop_leader_card;
-                $arr_safetycard['safety_section_card']  = $form->model()->safety_section_card;
-                $arr_safetycard['safety_department_card'] = $form->model()->safety_department_card;
+                $arr_safetycard['manager_name']    = $form->model()->manager_name_card;
+                $arr_safetycard['workshop_leader'] = $form->model()->workshop_leader_card;
+                $arr_safetycard['safety_section']  = $form->model()->safety_section_card;
+                $arr_safetycard['safety_department'] = $form->model()->safety_department_card;
 
-                $arr_disclosure['manager_name_disclosure'] = $form->model()->manager_name_disclosure;
-                $arr_disclosure['workshop_leader_disclosure'] = $form->model()->workshop_leader_disclosure;
-                $arr_disclosure['device_leader_disclosure'] = $form->model()->device_leader_disclosure;
+                $arr_disclosure['manager_name']    = $form->model()->manager_name_disclosure;
+                $arr_disclosure['workshop_leader'] = $form->model()->workshop_leader_disclosure;
+                $arr_disclosure['device_leader']   = $form->model()->device_leader_disclosure;
 
-
+                
                 // 如果是创建项目,那么就同时在另外三张表中添加记录
                 // $data = request()->route()->parameters();
                 // if (empty($data)) {
@@ -397,10 +397,10 @@ class ProjectController extends Controller
                     CheckTable::updateOrCreate(['project_id'=>$project_id], $arr_checktable);
 
                     // 创建项目-安全交底记录表
-                    Disclosure::updateOrCreate(['project_id'=>$project_id], $arr_safetycard);
+                    Disclosure::updateOrCreate(['project_id'=>$project_id], $arr_disclosure);
 
                     // 创建项目-安全传递卡
-                    SafetyCard::updateOrCreate(['project_id'=>$project_id], $arr_disclosure);
+                    SafetyCard::updateOrCreate(['project_id'=>$project_id], $arr_safetycard);
                 // }
 
             });

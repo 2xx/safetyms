@@ -75,10 +75,26 @@
                     <tr style="height:170px;">
                         <td>审核意见</td>
                         <td colspan=3 valign=top style="text-align:left;position: relative;" >审核人意见
-                            <a href="" style="position: absolute;left:40%;top:47%;">点击审核</a>
+                            @if($checkTable->verifier_sign==0)
+                                @if($checkTable->verifier==Admin::user()->id)
+                                 <a href="/admin/checktable/{{$checkTable->id}}/verifier/sign" style="position: absolute;left:40%;top:47%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:40%;top:47%;">等待{{$checkTable->verifier_name}}审核</span>
+                                @endif
+                            @elseif($checkTable->verifier_sign==1)
+                               <span style="position: absolute;left:40%;top:47%;">已由{{$checkTable->verifier_name}}审核</span>
+                            @endif
                         </td>
                         <td colspan=3 valign=top style="text-align:left;position: relative;" >审核部门领导意见
-                            <a href="" style="position: absolute;left:40%;top:47%;">点击审核</a>
+                            @if($checkTable->leader_sign==0)
+                                @if($checkTable->verifier_leader==Admin::user()->id)
+                                 <a href="/admin/checktable/{{$checkTable->id}}/verifier_leader/sign" style="position: absolute;left:40%;top:47%;">点击审核</a>
+                                @else
+                                 <span style="position: absolute;left:40%;top:47%;">等待{{$checkTable->verifier_leader_name}}审核</span>
+                                @endif
+                            @elseif($checkTable->leader_sign==1)
+                               <span style="position: absolute;left:40%;top:47%;">已由{{$checkTable->verifier_leader_name}}审核</span>
+                            @endif
                         </td>
                     </tr>
                 </table>
