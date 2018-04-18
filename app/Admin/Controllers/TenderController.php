@@ -107,10 +107,13 @@ class TenderController extends Controller
               // 资料ID
               $tenderfile_id = TenderFile::where('tender_id','=',$tender_id)->first()->id;
 
+              // 如果已经提交,就不显示 这3个功能
+              if (Tender::find($tender_id)->status !== 2) {
               
-              $actions->append("<a href='/admin/tenderfile/".$tenderfile_id."/edit'>上传档案资料</a>&nbsp;&nbsp;&nbsp;&nbsp;");
-              $actions->append("<a href='/admin/tender/".$this->getKey()."/edit'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;");
-              $actions->append("<a href='/admin/tender/commit/".$this->getKey()."'>提交</a>");
+                $actions->append("<a href='/admin/tenderfile/".$tenderfile_id."/edit'>上传档案资料</a>&nbsp;&nbsp;&nbsp;&nbsp;");
+                $actions->append("<a href='/admin/tender/".$this->getKey()."/edit'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;");
+                $actions->append("<a href='/admin/tender/commit/".$this->getKey()."'>提交</a>");
+              }
 
           });
 
@@ -218,8 +221,12 @@ class TenderController extends Controller
 
           // 如果申请表中已经存在这个项目的申请,那么就不显示 申请该项目的 超链接
           $tender = Tender::where('user_id','=',Admin::user()->id)->where('project_id','=',$actions->getKey())->first();
-          if (!$tender) {
-			       $actions->append('<a href="/admin/tender/maketender/'.$actions->getKey().'">申请该项目</a>');
+          if (empty($tender) || $tender->status == 2 || $tender->status == 3 ) {
+
+             // 如果 项目在发布中才可以申请
+             if ($tender && Project::find($tender->project_id)->status==2) {
+			           $actions->append('<a href="/admin/tender/maketender/'.$actions->getKey().'">申请该项目</a>');
+             }
           }
 
 
@@ -342,6 +349,16 @@ class TenderController extends Controller
         $project->save();
 
         return redirect('/admin/tenderlist/'.$project->id);
+    }
+
+    // 设置 申请 为 已提交状态
+    public function commit($tender_id)
+    {
+        $tender = Tender::find($tender_id);
+        $tender -> status = 2;
+        $tender -> save();
+
+        return redirect('/admin/tender');
     }
 
 }

@@ -20,6 +20,7 @@ Route::group([
     $router->get('tender/project/index', 'TenderController@projectindex');
     $router->get('tender/maketender/{projectid}', 'TenderController@makeTender');  // 创建 申请记录  申请_文件记录
     $router->get('tender/accepted/{tender_id}', 'TenderController@setAccepted');
+    $router->get('tender/commit/{tender_id}', 'TenderController@commit');   // 申请提交
     // $router->get('tenderfile/{projectid}', 'TenderFileController@edit');  // 上传 项目申请  相关档案资料
 
     $router->get('project/{id}/checktable', 'ProjectController@checkTable');  // 外来单位安全管理情况审核表
